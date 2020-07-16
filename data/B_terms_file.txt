@@ -1,0 +1,4 @@
+Phe001   obesity|overweight
+Phe002   beta-cell dysfunction
+Phe003   insulin resistance
+Phe004   glucose intolerance

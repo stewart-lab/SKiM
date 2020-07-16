@@ -129,7 +129,7 @@ def output_for_files(km_results, km_results_all, counts_dict):
         db_tot_all = counts_dict[targ_all].db_article_count
         p_value_all = kmr_all.p_value
         tkp_ratio_all = kmr_all.target_and_keyphrase_ratio
-        fet_p_value_and_ratio_all = kmr.fet_p_value_and_ratio
+        fet_p_value_and_ratio_all = kmr_all.fet_p_value_and_ratio
         output_all.append(
                 '{0}\t{1}\t{2}\t{3}\t{4}\t{5}\t{6}\t{7}'.format(
                                                     targ_all,

@@ -1,0 +1,3 @@
+CDM00000671	methotrexate|methotrexate sodium
+CD00289828	degludec|insulin degludec
+CDM00021695	alirocumab

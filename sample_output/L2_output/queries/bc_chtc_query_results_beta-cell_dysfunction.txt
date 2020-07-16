@@ -1,0 +1,4 @@
+target	target_with_keyphrase_count	target_count	keyphrase_count	db_article_count
+CDM00000671:methotrexate	0	37699	1371	29329938
+CDM00000662:metformin	51	16506	1371	29329938
+CDM00021695:alirocumab	0	277	1371	29329938

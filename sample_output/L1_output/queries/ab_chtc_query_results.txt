@@ -1,0 +1,5 @@
+target	target_with_keyphrase_count	target_count	keyphrase_count	db_article_count
+Phe001:obesity	23143	230149	118415	29329938
+Phe002:beta-cell dysfunction	755	1371	118415	29329938
+Phe003:insulin resistance	19028	69681	118415	29329938
+Phe004:glucose intolerance	2053	9047	118415	29329938
