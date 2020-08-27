@@ -80,9 +80,9 @@ def evaluate_pvalue_and_sort(results, p_val_cutoff=1e-5):
     km_results, km_results_all = \
                 compute_kinderminer_results(counts_list, p_val_cutoff)
 
-    # now sort by ratio
+    # now sort by prediction score (FET p-value and ratio)
     km_results = sorted(km_results,
-                        key=lambda x: x.target_and_keyphrase_ratio,
+                        key=lambda x: float(x.fet_p_value_and_ratio),
                         reverse=True)
 
     # various outputs
@@ -147,20 +147,20 @@ def compute_kinderminer_results(km_counts, p_cutoff=float('1e-5')):
     ret_all = list()
     ret = list()
     for kmc in km_counts:
-        # compute FET p
         targ_and_kp = kmc.target_and_keyphrase_count
         notarg_and_kp = kmc.notarget_and_keyphrase_count
         targ_and_nokp = kmc.target_and_nokeyphrase_count
         notarg_and_nokp = kmc.notarget_and_nokeyphrase_count
+        # compute FET p
         odds_ratio,p_value = \
                 stats.fisher_exact([[targ_and_kp,notarg_and_kp],
                                     [targ_and_nokp,notarg_and_nokp]],
                                     alternative='greater')
-        # eval
+        # compute ratio
         ratio_denom = targ_and_kp + targ_and_nokp
         if p_value < p_cutoff and ratio_denom > 0:
             # compute ratio
-            targ_and_kp_ratio = float(targ_and_kp) / ratio_denom
+            targ_and_kp_ratio = float(targ_and_kp) / float(ratio_denom)
             # computer FET p + ratio
             if p_value == 0.0:
                 log_fet_p_value = -math.log10(float(1.0e-323))
@@ -178,7 +178,7 @@ def compute_kinderminer_results(km_counts, p_cutoff=float('1e-5')):
                                             fet_p_value_and_ratio))
         elif p_value >= p_cutoff and ratio_denom > 0:
             if targ_and_kp > 0:
-                targ_and_kp_ratio = float(targ_and_kp) / ratio_denom
+                targ_and_kp_ratio = float(targ_and_kp) / float(ratio_denom)
                 log_fet_p_value = -math.log10(float(p_value))
                 log_ratio = math.log10(float(targ_and_kp_ratio))
                 fet_p_value_and_ratio = log_fet_p_value + log_ratio

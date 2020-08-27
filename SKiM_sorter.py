@@ -28,7 +28,6 @@ def get_results(OUTPUT_DIR, sub_dir):
     dir_path = os.path.join(OUTPUT_DIR, sub_dir)
     for root, dir, files in os.walk(dir_path):
         for filename in files:
-            print(filename)
             phenotype = get_phenotype(filename)
             if filename.endswith("_all.txt"):
                 RESULT_FILE = os.path.join(dir_path, filename)
@@ -38,6 +37,16 @@ def get_results(OUTPUT_DIR, sub_dir):
                 RESULT_FILE = os.path.join(dir_path, filename)
                 results = read_result_file(RESULT_FILE, results, phenotype)
     return results, results_all
+
+def sort_output(results, results_all):
+    # sort on FET p-value and ratio
+    results_sorted = sorted(results,
+                            key=lambda x: float(x.fet_p_value_and_ratio),
+                            reverse=True)
+    results_sorted_all = sorted(results_all,
+                            key=lambda x: float(x.fet_p_value_and_ratio),
+                            reverse=True)
+    return results_sorted, results_sorted_all 
 
 def get_phenotype(filename):
     if filename.endswith("_all.txt"):
@@ -81,32 +90,20 @@ def read_result_file(RESULT_FILE, result, phenotype):
 
     return result
 
-def main():
-    OUTPUT_DIR = sys.argv[1]
-    RESULT_DIR = sys.argv[2]
-    sub_dir = "L2_output/with_ratios/"     
-   
-    # read b-c output files
-    results, results_all = get_results(OUTPUT_DIR, sub_dir)
+def write_to_file(RESULT_DIR, sub_dir, bc_results, filename):
+    # check whether the sub directories exist within the output directory
+    outfile_path_name = os.path.join(RESULT_DIR, 
+                                     sub_dir)
+    isdir = os.path.isdir(outfile_path_name)
 
-    # sort on FET p-value and ratio
-    results_sorted = sorted(results,
-                            key=lambda x: float(x.fet_p_value_and_ratio),
-                            reverse=True)
-    results_sorted_all = sorted(results_all,
-                            key=lambda x: float(x.fet_p_value_and_ratio),
-                            reverse=True)
-    
-    # write to file
-    write_to_file(RESULT_DIR,
-                    results_sorted, 
-                    filename="bc_output_sorted_on_prediction_score.txt")
-    write_to_file(RESULT_DIR,
-                    results_sorted_all,
-                    filename="all_bc_output_sorted_on_prediction_score.txt")
+    # create the sub directory if absent
+    if isdir == False:
+        try:
+            os.makedirs(outfile_path_name)
+        except OSError:
+            print ("Creation of the output directory %s failed" % outfile_path_name)
 
-def write_to_file(RESULT_DIR, bc_results, filename):
-    OUTPUT_FILE = os.path.join(RESULT_DIR,
+    OUTPUT_FILE = os.path.join(outfile_path_name,
                                     filename) 
     with open(OUTPUT_FILE, 'w') as outfile:
         outfile.write('target\ttarget_with_keyphrase_count\t' +
@@ -136,6 +133,29 @@ def write_to_file(RESULT_DIR, bc_results, filename):
                                                                 phen))
             outfile.write('\n')
 
+def main():
+    OUTPUT_DIR = sys.argv[1]
+    RESULT_DIR = sys.argv[2]
+    sub_dir = "L2_output/with_ratios/"     
+   
+    # read b-c output files
+    results, results_all = get_results(OUTPUT_DIR, sub_dir)
+
+    # sort on FET p-value and ratio
+    results_sorted = sorted(results,
+                            key=lambda x: float(x.fet_p_value_and_ratio),
+                            reverse=True)
+    results_sorted_all = sorted(results_all,
+                            key=lambda x: float(x.fet_p_value_and_ratio),
+                            reverse=True)
+    
+    # write to file
+    write_to_file(RESULT_DIR,
+                    results_sorted, 
+                    filename="bc_output_sorted_on_prediction_score.txt")
+    write_to_file(RESULT_DIR,
+                    results_sorted_all,
+                    filename="all_bc_output_sorted_on_prediction_score.txt")
 
 if __name__ == '__main__':
     main()

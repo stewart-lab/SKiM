@@ -5,10 +5,11 @@ import datetime
 import time
 import unittest
 import argparse
-import SKiM
+import SKiM_output
 import SKiM_chtc_query2
 import SKiM_evaluation
 import SKiM_sorter
+import SKiM_output_grouper
 
 def build_arg_parser():
     parser = argparse.ArgumentParser(
@@ -89,7 +90,7 @@ def main():
                                                   TARGET_TERM_FILE1,
                                                   THROUGH_YEAR, 
                                                   SEPARATE_KP)
-    SKiM.write_to_file(ab_results, 
+    SKiM_output.write_to_file(ab_results, 
                        OUTPUT_DIR,
                        sub_dir = "L1_output/queries/", 
                        output_file = "ab_chtc_query_results.txt")
@@ -97,11 +98,11 @@ def main():
     # evaluate - Level 1    
     ab_output, ab_output_all, ab_bterms = \
         SKiM_evaluation.evaluate_pvalue_and_sort(ab_results)
-    SKiM.write_to_file(ab_output, 
+    SKiM_output.write_to_file(ab_output, 
                        OUTPUT_DIR,
                        sub_dir = "L1_output/with_ratios/", 
                        output_file = "ab_output_metpvaluecutoff.txt")
-    SKiM.write_to_file(ab_output_all,
+    SKiM_output.write_to_file(ab_output_all,
                        OUTPUT_DIR,
                        sub_dir = "L1_output/with_ratios/",
                        output_file = "ab_output_all.txt")
@@ -122,7 +123,7 @@ def main():
                                                       SEPARATE_KP)
         bterm = ab_i_bterms.split(":")[1]
         bterm = bterm.replace(' ','_' )
-        SKiM.write_to_file(bc_results,
+        SKiM_output.write_to_file(bc_results,
                            OUTPUT_DIR,
                            sub_dir = "L2_output/queries/",
                            output_file = "bc_chtc_query_results_" + \
@@ -132,12 +133,12 @@ def main():
         bc_output, bc_output_all, bc_cterms = \
             SKiM_evaluation.evaluate_pvalue_and_sort(bc_results) 
             
-        SKiM.write_to_file(bc_output, 
+        SKiM_output.write_to_file(bc_output, 
                            OUTPUT_DIR,
                            sub_dir = "L2_output/with_ratios/",  
                            output_file = "bc_output_metpvaluecutoff_" \
                                             + bterm + ".txt")
-        SKiM.write_to_file(bc_output_all,
+        SKiM_output.write_to_file(bc_output_all,
                            OUTPUT_DIR,
                            sub_dir = "L2_output/with_ratios/",
                            output_file = "bc_output_metpvaluecutoff_" \
@@ -148,17 +149,39 @@ def main():
         if count >= int(NUM_LEVEL2):
             break    
 
-    # final output
+    # final output - C terms are ranked on prediction score
     c_output, c_output_all = SKiM_sorter.get_results(
                                             OUTPUT_DIR, 
                                             sub_dir = "L2_output/with_ratios/") 
+    c_output_sorted, c_output_all_sorted = SKiM_sorter.sort_output(c_output, 
+                                                                c_output_all)
+    sub_dir = "L2_output/all_bc_output/"
     SKiM_sorter.write_to_file(OUTPUT_DIR,
-                    c_output,
-                    filename="bc_output_sorted_on_prediction_score.txt")
+                    sub_dir,
+                    c_output_sorted,
+                    filename = "bc_output_sorted_on_prediction_score.txt")
     SKiM_sorter.write_to_file(OUTPUT_DIR,
-                    c_output_all,
-                    filename="all_bc_output_sorted_on_prediction_score.txt")
+                    sub_dir,
+                    c_output_all_sorted,
+                    filename = "all_bc_output_sorted_on_prediction_score.txt")
     
+    # final output - C terms are ranked and grouped
+    results, uniquetargets = \
+                    SKiM_output_grouper.get_targets_uniquelist(OUTPUT_DIR,
+                        sub_dir = "L2_output/all_bc_output/",
+                        filename = "bc_output_sorted_on_prediction_score.txt")
+    output_1, output_2 = SKiM_output_grouper.get_grouped_results(
+                                                            c_output_sorted, 
+                                                            uniquetargets)
+    sub_dir = "SKiM_output/"
+    SKiM_sorter.write_to_file(OUTPUT_DIR,
+                    sub_dir,
+                    output_1,
+                    filename = "bc_output_1.txt")
+    SKiM_sorter.write_to_file(OUTPUT_DIR,
+                    sub_dir,
+                    output_2,
+                    filename = "bc_output_2.txt")
 
 if __name__ == '__main__':
     start = time.time()
