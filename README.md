@@ -15,10 +15,10 @@ $ python production_SKiM.py -h
 Basic syntax for executing SKiM:   
 $ python production_SKiM.py keyphrase level_1_file level_2_file output_dir num_level2_queries  
 
-Example command using the sample A, B and C term files within 'data' folder:
+Example command using the sample A, B and C term files within 'data' directory:
 $ python production_SKiM.py data/A_term_file.txt data/B_terms_file.txt data/C_terms_file.txt sample_output/ 4
   
-Output is saved within 'sample_output' folder. This folder contains L1_output, L2_output, and SKiM_output folders. The output from level 1 execution (A to Bs) are saved in L1_output folder. The output from level 2 execution (top n Bs to Cs, where n is number) are saved in L2_output folder. The final output is saved in SKiM_output. L1_output includes 'queries' folder to save various counts between A and every B, and 'with_ratios' folder to save significantly associated Bs with A. L2_output includes three folders: 'queries' folder to save various counts between every B from top n Bs and Cs, 'with_ratios' folder to save significantly associated Cs with every B, and 'all_bc_output' folder to save all B to C associations and significant Bs to Cs associations. L1_output, L2_output, and SKiM_output folders and their sub folders are created automatically during runtime. Please see sample_output folder for details.   
+Output is saved within 'sample_output' directory. This directory contains L1_output, L2_output, and SKiM_output directories. The output from level 1 execution (A to Bs) are saved in L1_output directory. The output from level 2 execution (top n Bs to Cs, where n is number) are saved in L2_output directory. The final output is saved in SKiM_output directory. L1_output includes 'queries' directory to save various counts between A and every B, and 'with_ratios' directory to save significantly associated Bs with A. L2_output includes three directories: 'queries' directory to save various counts between every B from top n Bs and Cs, 'with_ratios' directory to save significantly associated Cs with every B, and 'all_bc_output' directory to save all B to C associations and significant Bs to Cs associations. L1_output, L2_output, and SKiM_output directories and their sub directories are created automatically during runtime. Please see sample_output directory for details.   
 
 SKiM was developed with Python 3.7.2.   
    
