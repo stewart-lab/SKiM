@@ -1,0 +1,2 @@
+target	targ_and_kp	targ_tot	kp_tot	db_tot	fet_p_value	targ_and_kp_ratio	prediction_score
+CDM00000662:metformin	151	16930	9152	29613663	3.567180617140463e-160	0.008919078558771412	157.3979948896464

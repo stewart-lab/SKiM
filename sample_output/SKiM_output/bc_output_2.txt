@@ -1,0 +1,2 @@
+target	target_with_keyphrase_count	target_count	keyphrase_count	db_article_count	fet_p_value	target_and_keyphrase_ratio	fet_p_value_and_ratio	phenotypes
+CDM00000662:metformin	2328	16930	70704	29613663	0.0|0.0|3.567180617140463e-160|6.747170271177185e-73	0.1375073833431778|0.08281157708210278|0.008919078558771412|0.0030124040165386886	322.1435113653207|321.9232764029735|157.3979948896464|69.64979154786637	insulin_resistance|obesity|glucose_intolerance|beta-cell_dysfunction
