@@ -22,6 +22,6 @@ Output is saved within 'sample_output' directory. This directory contains L1_out
 
 SKiM was developed with Python 3.7.2.   
    
-Author: Kalpana Raja and John Steill  
+Authors: Kalpana Raja and John Steill  
    
 Affiliation: Morgridge Institute for Research, Madison, WI, USA.   
