@@ -60,7 +60,8 @@ def make_query_object(target_term, key_phrase, through_year):
 def get_count(target_term, key_phrase, through_year):
     key = str((target_term, key_phrase, through_year))
     q = make_query_object(target_term, key_phrase, through_year)
-    res = requests.get(URL_BASE, data=json.dumps(q), auth=AUTH)
+    res = requests.get(URL_BASE, data=json.dumps(q), auth=AUTH,
+                        headers={'Content-Type': 'application/json'})
     ret_cnt = res.json()['count']
     return ret_cnt
 
