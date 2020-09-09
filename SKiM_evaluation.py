@@ -49,7 +49,7 @@ class KinderMinerResult(object):
         self.target_and_keyphrase_ratio = target_and_keyphrase_ratio
         self.fet_p_value_and_ratio = fet_p_value_and_ratio
 
-def evaluate_pvalue_and_sort(results, p_val_cutoff=1e-5):
+def evaluate_pvalue_and_sort(results, p_val_cutoff):
     """Evaluate KinderMiner results from Level 1 and Level 2"""
     counts_list = []
     counts_dict = {}
@@ -142,10 +142,11 @@ def output_for_files(km_results, km_results_all, counts_dict):
                                                     fet_p_value_and_ratio_all))
     return output, output_all, return_array
 
-def compute_kinderminer_results(km_counts, p_cutoff=float('1e-5')):
+def compute_kinderminer_results(km_counts, p_cutoff):
     """Filter KinderMiner results meeting cut-off"""
     ret_all = list()
     ret = list()
+    p_cutoff=float(p_cutoff)
     for kmc in km_counts:
         targ_and_kp = kmc.target_and_keyphrase_count
         notarg_and_kp = kmc.notarget_and_keyphrase_count

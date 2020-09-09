@@ -83,6 +83,7 @@ def main():
     NUM_LEVEL2 = args.num_level2_queries
     THROUGH_YEAR = args.year
     SEPARATE_KP = args.sep
+    PVALUE_CUTOFF = args.FET_pvalue
 
     # chtc query - Level 1
     ab_results, b_dictionary = \
@@ -97,7 +98,8 @@ def main():
     
     # evaluate - Level 1    
     ab_output, ab_output_all, ab_bterms = \
-        SKiM_evaluation.evaluate_pvalue_and_sort(ab_results)
+        SKiM_evaluation.evaluate_pvalue_and_sort(ab_results,
+                                                PVALUE_CUTOFF)
     SKiM_output.write_to_file(ab_output, 
                        OUTPUT_DIR,
                        sub_dir = "L1_output/with_ratios/", 
@@ -131,7 +133,8 @@ def main():
         
         # evaluate
         bc_output, bc_output_all, bc_cterms = \
-            SKiM_evaluation.evaluate_pvalue_and_sort(bc_results) 
+            SKiM_evaluation.evaluate_pvalue_and_sort(bc_results,
+                                                    PVALUE_CUTOFF) 
             
         SKiM_output.write_to_file(bc_output, 
                            OUTPUT_DIR,
